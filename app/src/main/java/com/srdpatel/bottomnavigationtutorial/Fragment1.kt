@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.srdpatel.bottomnavigationtutorial.AppConstants.LOG_APP_NAME
 import com.srdpatel.bottomnavigationtutorial.databinding.FragmentFragment1Binding
 
