@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">navBottomNav</string>
+
+    <string name="fragment_1">Fragment 1</string>
+    <string name="fragment_2">Fragment 2</string>
+    <string name="fragment_3">Fragment 3</string>
+    <string name="st_plus_one">Plus + 1</string>
+</resources>
