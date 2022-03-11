@@ -26,12 +26,14 @@ class Fragment1 : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(" :$LOG_APP_NAME: ", "Fragment1: :onCreateView: binding is: $binding")
         binding = FragmentFragment1Binding.inflate(inflater, container, false)
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(" :$LOG_APP_NAME: ", "Fragment1: :onViewCreated: ")
         setObserver()
         setClickListeners()
     }
@@ -44,7 +46,7 @@ class Fragment1 : Fragment() {
         }
 
         binding?.idButtonNext?.setOnClickListener {
-
+            findNavController().navigate(Fragment1Directions.actionFragment1ToFragment2())
         }
     }
 
