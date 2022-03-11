@@ -11,7 +11,13 @@
         tools:layout="@layout/fragment_fragment1">
         <action
             android:id="@+id/action_fragment1_to_fragment2"
-            app:destination="@id/fragment2" />
+            app:destination="@id/fragment2">
+            <argument
+                android:name="number"
+                app:argType="integer"
+                android:defaultValue="1"
+                />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/fragment2"
