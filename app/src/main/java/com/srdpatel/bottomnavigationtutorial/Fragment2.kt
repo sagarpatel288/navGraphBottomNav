@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.srdpatel.bottomnavigationtutorial.databinding.FragmentFragment2Binding
 
 class Fragment2 : Fragment() {
@@ -38,6 +39,10 @@ class Fragment2 : Fragment() {
         binding?.idButtonPlusOne?.setOnClickListener {
             Log.d(" :${AppConstants.LOG_APP_NAME}: ", "Fragment2: :setClickListeners: onClickedPlusOne")
             sharedViewModel.increaseNumber()
+        }
+
+        binding?.idButtonNext?.setOnClickListener {
+            findNavController().navigate(Fragment2Directions.actionFragment2ToFragment3())
         }
     }
 
