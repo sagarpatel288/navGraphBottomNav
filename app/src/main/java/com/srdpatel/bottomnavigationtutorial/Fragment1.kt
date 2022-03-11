@@ -41,6 +41,10 @@ class Fragment1 : Fragment() {
             Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setClickListeners: onClickedPlusOne")
             sharedViewModel.increaseNumber()
         }
+
+        binding?.idButtonNext?.setOnClickListener {
+
+        }
     }
 
     private fun setObserver() {
