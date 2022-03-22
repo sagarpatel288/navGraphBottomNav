@@ -68,11 +68,11 @@ class Fragment1 : Fragment() {
             binding?.idTextViewNumber?.text = it?.toString()
         }
 
-        // comment by srdpatel: 22/03/22 Comment out "viewLifecycleOwner" while observing from "fragment" for proper conclusion.
-        sharedViewModel.liveDataTitle.observe(viewLifecycleOwner) {
-            Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setObserver: viewLifeCycleOwner: onChanged: $it")
-            binding?.idTextViewNumber?.text = it?.toString()
-        }
+        // comment by srdpatel: 22/03/22 Comment out "viewLifecycleOwner" while observing from "fragment as a lifecycleOwner" for proper conclusion.
+//        sharedViewModel.liveDataTitle.observe(viewLifecycleOwner) {
+//            Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setObserver: viewLifeCycleOwner: onChanged: $it")
+//            binding?.idTextViewNumber?.text = it?.toString()
+//        }
         //endregion
 
         //region repeatOnLifeCycle
