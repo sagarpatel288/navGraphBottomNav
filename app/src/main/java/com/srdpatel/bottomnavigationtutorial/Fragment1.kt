@@ -7,9 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.*
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.srdpatel.bottomnavigationtutorial.AppConstants.LOG_APP_NAME
 import com.srdpatel.bottomnavigationtutorial.databinding.FragmentFragment1Binding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class Fragment1 : Fragment() {
 
@@ -53,10 +59,43 @@ class Fragment1 : Fragment() {
     private fun setObserver() {
         Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setObserver: ")
         // FIXME srdpatel: 11/03/22 If we use "this" as the owner, we will get duplicate observers everytime.
-        sharedViewModel.liveDataTitle.observe(viewLifecycleOwner) {
-            Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setObserver: onChanged: $it")
+        //region viewLifeCycleOwner
+        sharedViewModel.liveDataTitle.observe(this) {
+            Log.d(
+                " :$LOG_APP_NAME: ",
+                "Fragment1: :setObserver: fragment as a lifeCycleOwner: onChanged: $it"
+            )
             binding?.idTextViewNumber?.text = it?.toString()
         }
+
+        // comment by srdpatel: 22/03/22 Comment out "viewLifecycleOwner" while observing from "fragment" for proper conclusion.
+        sharedViewModel.liveDataTitle.observe(viewLifecycleOwner) {
+            Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setObserver: viewLifeCycleOwner: onChanged: $it")
+            binding?.idTextViewNumber?.text = it?.toString()
+        }
+        //endregion
+
+        //region repeatOnLifeCycle
+        lifecycleScope.launchWhenStarted {
+            sharedViewModel.numbers.collect {
+                Log.d(
+                    " :$LOG_APP_NAME: ",
+                    "Fragment1: :setObserver: launchWhenStarted: collected: $it"
+                )
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(State.STARTED) {
+                sharedViewModel.numbers.collect {
+                    Log.d(
+                        " :$LOG_APP_NAME: ",
+                        "Fragment1: :setObserver: repeatOnLifeCycle: collected: $it"
+                    )
+                }
+            }
+        }
+        //endregion
     }
 
     override fun onDestroyView() {
