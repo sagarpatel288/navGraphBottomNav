@@ -38,3 +38,9 @@
             app:destination="@id/fragment1" />
     </fragment>
 </navigation>
+
+
+
+
+
+

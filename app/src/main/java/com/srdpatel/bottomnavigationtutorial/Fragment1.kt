@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Lifecycle.*
+import androidx.lifecycle.Lifecycle.State
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.srdpatel.bottomnavigationtutorial.AppConstants.LOG_APP_NAME
 import com.srdpatel.bottomnavigationtutorial.databinding.FragmentFragment1Binding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class Fragment1 : Fragment() {
@@ -23,7 +21,7 @@ class Fragment1 : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(AppConstants.LOG_APP_NAME + "Fragment1", "onCreate: " + AppConstants.LOG_APP_NAME)
+        Log.d(LOG_APP_NAME + "Fragment1", "onCreate: " + LOG_APP_NAME)
         super.onCreate(savedInstanceState)
     }
 
@@ -60,19 +58,22 @@ class Fragment1 : Fragment() {
         Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setObserver: ")
         // FIXME srdpatel: 11/03/22 If we use "this" as the owner, we will get duplicate observers everytime.
         //region viewLifeCycleOwner
-        sharedViewModel.liveDataTitle.observe(this) {
+        /*sharedViewModel.liveDataTitle.observe(this) {
             Log.d(
                 " :$LOG_APP_NAME: ",
                 "Fragment1: :setObserver: fragment as a lifeCycleOwner: onChanged: $it"
             )
             binding?.idTextViewNumber?.text = it?.toString()
-        }
+        }*/
 
         // comment by srdpatel: 22/03/22 Comment out "viewLifecycleOwner" while observing from "fragment as a lifecycleOwner" for proper conclusion.
-//        sharedViewModel.liveDataTitle.observe(viewLifecycleOwner) {
-//            Log.d(" :$LOG_APP_NAME: ", "Fragment1: :setObserver: viewLifeCycleOwner: onChanged: $it")
-//            binding?.idTextViewNumber?.text = it?.toString()
-//        }
+        sharedViewModel.liveDataTitle.observe(viewLifecycleOwner) {
+            Log.d(
+                " :$LOG_APP_NAME: ",
+                "Fragment1: :setObserver: viewLifeCycleOwner: onChanged: $it"
+            )
+            binding?.idTextViewNumber?.text = it?.toString()
+        }
         //endregion
 
         //region repeatOnLifeCycle
@@ -82,6 +83,7 @@ class Fragment1 : Fragment() {
                     " :$LOG_APP_NAME: ",
                     "Fragment1: :setObserver: launchWhenStarted: collected: $it"
                 )
+                binding?.idTextViewNumber?.text = it.toString()
             }
         }
 
@@ -92,6 +94,7 @@ class Fragment1 : Fragment() {
                         " :$LOG_APP_NAME: ",
                         "Fragment1: :setObserver: repeatOnLifeCycle: collected: $it"
                     )
+                    binding?.idTextViewNumber?.text = it.toString()
                 }
             }
         }
@@ -100,14 +103,14 @@ class Fragment1 : Fragment() {
 
     override fun onDestroyView() {
         Log.d(
-            AppConstants.LOG_APP_NAME + "Fragment1",
-            "onDestroyView: " + AppConstants.LOG_APP_NAME
+            LOG_APP_NAME + "Fragment1",
+            "onDestroyView: $LOG_APP_NAME"
         )
         super.onDestroyView()
     }
 
     override fun onDetach() {
-        Log.d(AppConstants.LOG_APP_NAME + "Fragment1", "onDetach: " + AppConstants.LOG_APP_NAME)
+        Log.d(LOG_APP_NAME + "Fragment1", "onDetach: $LOG_APP_NAME")
         super.onDetach()
     }
 }

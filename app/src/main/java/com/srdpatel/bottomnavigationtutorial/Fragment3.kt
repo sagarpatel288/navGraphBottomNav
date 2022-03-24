@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.srdpatel.bottomnavigationtutorial.R
 import com.srdpatel.bottomnavigationtutorial.databinding.FragmentFragment3Binding
+import kotlinx.coroutines.launch
 
 class Fragment3 : Fragment() {
     private var binding: FragmentFragment3Binding? = null
@@ -53,6 +56,40 @@ class Fragment3 : Fragment() {
             Log.d(" :${AppConstants.LOG_APP_NAME}: ", "Fragment3: :setObserver: onChanged: $it")
             binding?.idTextViewNumber?.text = it?.toString()
         }
+
+        // comment by srdpatel: 22/03/22 Comment out "viewLifecycleOwner" while observing from "fragment as a lifecycleOwner" for proper conclusion.
+        sharedViewModel.liveDataTitle.observe(viewLifecycleOwner) {
+            Log.d(
+                " :${AppConstants.LOG_APP_NAME}: ",
+                "Fragment3: :setObserver: viewLifeCycleOwner: onChanged: $it"
+            )
+            binding?.idTextViewNumber?.text = it?.toString()
+        }
+        //endregion
+
+        //region repeatOnLifeCycle
+        lifecycleScope.launchWhenStarted {
+            sharedViewModel.numbers.collect {
+                Log.d(
+                    " :${AppConstants.LOG_APP_NAME}: ",
+                    "Fragment3: :setObserver: launchWhenStarted: collected: $it"
+                )
+                binding?.idTextViewNumber?.text = it.toString()
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sharedViewModel.numbers.collect {
+                    Log.d(
+                        " :${AppConstants.LOG_APP_NAME}: ",
+                        "Fragment3: :setObserver: repeatOnLifeCycle: collected: $it"
+                    )
+                    binding?.idTextViewNumber?.text = it.toString()
+                }
+            }
+        }
+        //endregion
     }
 
     override fun onDestroyView() {
